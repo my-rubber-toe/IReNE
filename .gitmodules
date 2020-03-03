@@ -1,0 +1,18 @@
+[submodule "IReNE-admin-server"]
+	path = IReNE-admin-server
+	url = https://github.com/rubbertoe-G/IReNE-admin-server.git
+[submodule "IReNE-admin-ui"]
+	path = IReNE-admin-ui
+	url = https://github.com/rubbertoe-G/IReNE-admin-ui.git
+[submodule "IReNE-tellspace-server"]
+	path = IReNE-tellspace-server
+	url = https://github.com/rubbertoe-G/IReNE-tellspace-server.git
+[submodule "IReNE-tellspace-ui"]
+	path = IReNE-tellspace-ui
+	url = https://github.com/rubbertoe-G/IReNE-tellspace-ui.git
+[submodule "IReNE-searchspace-server"]
+	path = IReNE-searchspace-server
+	url = https://github.com/rubbertoe-G/IReNE-searchspace-server.git
+[submodule "IReNE-searchspace-ui"]
+	path = IReNE-searchspace-ui
+	url = https://github.com/rubbertoe-G/IReNE-searchspace-ui.git
