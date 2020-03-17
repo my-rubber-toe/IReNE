@@ -16,3 +16,6 @@
 [submodule "IReNE-searchspace-ui"]
 	path = IReNE-searchspace-ui
 	url = https://github.com/rubbertoe-G/IReNE-searchspace-ui.git
+[submodule "IReNE-Database"]
+	path = IReNE-Database
+	url = https://github.com/rubbertoe-G/IReNE-Database.git
