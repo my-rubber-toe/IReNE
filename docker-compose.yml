@@ -1,0 +1,99 @@
+# This file contains the configuration of all the containers to be used for the project.
+
+version: '3'
+services:
+
+  # Reverse Proxy
+  nginx: 
+    image: nginx:latest
+    restart: always
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl-certs:/etc/nginx/ssl
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - irene-network
+  
+  #################### DATABASE ####################
+  irene-db: 
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment: 
+      - MONGO_INITDB_DATABASE=IReNEdb # Database name as in init-mogo.js
+      - MONGO_INITDB_ROOT_USERNAME=testuser # Database root username as in init-mogo.js
+      - MONGO_INITDB_ROOT_PASSWORD=testpassword # Database root password  as in init-mogo.js
+    volumes:
+      - database_vol:/data/db # Update to a location on disc and not a volume
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro # Read the init-file to setup db
+    networks:
+      - irene-network
+
+  # angular-ssl
+  angular-ssl:
+    build: 
+      context: ./angular-ssl
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+
+  #################### ADMIN ####################
+  # admin-ui
+  admin-ui:
+    build: 
+      context: ./IReNE-admin-ui
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+  
+  # admin-server
+  admin-server:
+    build: 
+      context: ./IReNE-admin-server
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+
+  #################### TellSpace ####################
+  # tellspace-ui
+  tellspace-ui:
+    build: 
+      context: ./IReNE-tellspace-ui
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+
+  # tellspace-server
+  tellspace-server:
+    build: 
+      context: ./IReNE-tellspace-server
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+
+  #################### SearchSpace ####################
+  # searchspace-ui
+  searchspace-ui:
+    build: 
+      context: ./IReNE-searchspace-ui
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+  
+  # searchspace-server
+  searchspace-server:
+    build: 
+      context: ./IReNE-searchspace-server
+      dockerfile: ./Dockerfile
+    networks:
+      - irene-network
+
+
+networks:
+  irene-network:
+
+volumes:
+  database_vol: 
