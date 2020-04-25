@@ -1,5 +1,14 @@
 # IReNE
-IReNE is an extension and continuation of the IReN web application.
+IReNE is an extension and continuation of the IReN web application. Consists of 8 microservices:
+
+1. Reverse Proxy
+2. Database
+3. SearchSpace UI
+4. SearchSpace Server
+5. TellSpace UI
+6. TellSpace Server
+7. Admin UI
+8.Admin Server
 
 ## Setup
 
