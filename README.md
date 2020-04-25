@@ -1,8 +1,6 @@
 # IReNE
 IReNE is an extension and continuation of the IReN web application.
 
-https://unix.stackexchange.com/questions/199966/how-to-configure-centos-7-firewalld-to-allow-docker-containers-free-access-to-th
-
 ## Setup
 
 Ensure that the docker bridge, **docker0**, is part of the `trusted` zone of the firewall. To verify run:
@@ -51,4 +49,6 @@ Select one of the interfaces and run:
 ```
 
 Then reload the firewall with `sudo firewall --reload`.
+
+***For more infor on troubleshooting firewall please refer to: https://unix.stackexchange.com/questions/199966/how-to-configure-centos-7-firewalld-to-allow-docker-containers-free-access-to-th***
 
