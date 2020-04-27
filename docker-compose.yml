@@ -20,8 +20,7 @@ services:
   #################### DATABASE ####################
   irene-db: 
     image: mongo:latest
-    ports:
-      - 27017:27017
+    restart: always
     environment: 
       - MONGO_INITDB_DATABASE=IReNEdb # Database name as in init-mogo.js
       - MONGO_INITDB_ROOT_USERNAME=testuser # Database root username as in init-mogo.js
@@ -32,17 +31,19 @@ services:
     networks:
       - irene-network
 
-  # angular-ssl
+  # #################### ANGULAR SSL ####################
   angular-ssl:
+    restart: always
     build: 
       context: ./angular-ssl
       dockerfile: ./Dockerfile
     networks:
       - irene-network
 
-  #################### ADMIN ####################
+  # #################### ADMIN ####################
   # admin-ui
   admin-ui:
+    restart: always
     build: 
       context: ./IReNE-admin-ui
       dockerfile: ./Dockerfile
@@ -51,15 +52,17 @@ services:
   
   # admin-server
   admin-server:
+    restart: always
     build: 
       context: ./IReNE-admin-server
       dockerfile: ./Dockerfile
     networks:
       - irene-network
 
-  #################### TellSpace ####################
+  # #################### TellSpace ####################
   # tellspace-ui
   tellspace-ui:
+    restart: always
     build: 
       context: ./IReNE-tellspace-ui
       dockerfile: ./Dockerfile
@@ -68,15 +71,17 @@ services:
 
   # tellspace-server
   tellspace-server:
+    restart: always
     build: 
       context: ./IReNE-tellspace-server
       dockerfile: ./Dockerfile
     networks:
       - irene-network
 
-  #################### SearchSpace ####################
+  # #################### SearchSpace ####################
   # searchspace-ui
   searchspace-ui:
+    restart: always
     build: 
       context: ./IReNE-searchspace-ui
       dockerfile: ./Dockerfile
@@ -85,15 +90,16 @@ services:
   
   # searchspace-server
   searchspace-server:
+    restart: always
     build: 
       context: ./IReNE-searchspace-server
       dockerfile: ./Dockerfile
     networks:
       - irene-network
 
-
+  
 networks:
   irene-network:
 
 volumes:
-  database_vol: 
+  database_vol:
