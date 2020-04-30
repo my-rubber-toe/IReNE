@@ -18,30 +18,21 @@ services:
       - irene-network
   
   #################### DATABASE ####################
-  # irene-db: 
+  irene-db: 
     image: mongo:latest
     restart: always
+    # ports: 
+    #   - 27017:27017 # Testing, port should not be open to the public
     environment: 
       - MONGO_INITDB_DATABASE=IReNEdb # Database name as in init-mogo.js
       - MONGO_INITDB_ROOT_USERNAME=testuser # Database root username as in init-mogo.js
       - MONGO_INITDB_ROOT_PASSWORD=testpassword # Database root password  as in init-mogo.js
     volumes:
       - database_vol:/data/db # Update to a location on disc and not a volume
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro # Read the init-file to setup db
     networks:
       - irene-network
 
-  # #################### ANGULAR SSL ####################
-  angular-ssl:
-    restart: always
-    build: 
-      context: ./angular-ssl
-      dockerfile: ./Dockerfile
-    networks:
-      - irene-network
-
-  # #################### ADMIN ####################
-  admin-ui
+  # # #################### ADMIN ####################
   admin-ui:
     restart: always
     build: 
@@ -50,7 +41,6 @@ services:
     networks:
       - irene-network
   
-  # admin-server
   admin-server:
     restart: always
     build: 
@@ -59,8 +49,7 @@ services:
     networks:
       - irene-network
 
-  # #################### TellSpace ####################
-  # # tellspace-ui
+  # # #################### TellSpace ####################
   tellspace-ui:
     restart: always
     build: 
@@ -69,7 +58,7 @@ services:
     networks:
       - irene-network
 
-  # # tellspace-server
+  
   tellspace-server:
     restart: always
     build: 
@@ -78,8 +67,7 @@ services:
     networks:
       - irene-network
 
-  # #################### SearchSpace ####################
-  # searchspace-ui
+  # # #################### SearchSpace ####################
   searchspace-ui:
     restart: always
     build: 
@@ -88,7 +76,6 @@ services:
     networks:
       - irene-network
   
-  # searchspace-server
   searchspace-server:
     restart: always
     build: 
