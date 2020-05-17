@@ -1,47 +1,80 @@
+# Services Configuration File
+# Author: Roberto Guzman - roberto.guzman3@upr.edu
+#  
+# This file contains the Docker configuration for all the services that compose the IReNE applications.
+# Eight services compose this file. Two which are the reverse-proxy gateway and the database system
+#
+# Note: All comments generated in this file are made by the author.
+
 # This file contains the configuration of all the containers to be used for the project.
 
 version: '3.8'
+
+# Internal network of the system
+# When all services run, they will use an internal network to communicate between them. This network ensures that only specific services are
+# exposed, ensures DNS communication and database communication protection.
+networks:
+  irene-network:
+
+# Docker volumes
+# These are the data sources that some of the services will use to maintain persistency on the data. In this case, the volume with name
+# "irene-db" is used as the database persistent volume.
+#
+# NOTE: DO NOT remove or delete the "irene-db" volume, otherwise all database data will be lost.
+volumes:
+  irene_db:
+
 services:
 
-  # Proxy
+  # Reverese Proxy Gateway
+  # The entry point of the system. When users connect to the provided endpoints, this service will redirect requests depending
+  # on the specified endpoints. For more info please refer to the nginx.conf file.
   reverse-proxy: 
-    image: nginx:latest
+    image: pagespeed/nginx-pagespeed
     restart: always
     container_name: nginx
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl-certs:/etc/nginx/ssl
+      - ./nginx.conf:/etc/nginx/nginx.conf # Nginx main config file.
+      - ./ssl-certs:/etc/nginx/ssl # Map SSL certificates and key files to the internal container directory.
+      - ./logs/access.log:/dev/stdout # Map container standard output to the "./logs/access.log" file.
+      - ./logs/error.log:/dev/stderr # Map container standard error output to the "./logs/access.log" file.
     ports:
-      - 80:80
-      - 443:443
+      - 80:80 # Map port 80 of the container.
+      - 443:443 # Map port 443 of the container.
+    healthcheck:
+      test: curl --fail -s https://test.irene.uprm.edu || exit 1
+      interval: 350s
+      timeout: 10s
+      retries: 5
     networks:
-      - irene-network
+      - irene-network # Internal network to be used.
   
-  #################### DATABASE ####################
+  # Database Service container configuration 
   irene-db: 
     image: mongo:latest
     restart: always
-    # ports: 
-    #   - 27017:27017 # Testing, port should not be open to the public
+    ports: # COMMENT ON PRODUCTION ENVIRONMENT: Exposes the database to external connections.
+      - 27017:27017 # COMMENT ON PRODUCTION ENVIRONMENT: Exposes the database to external connections.
     environment: 
-      - MONGO_INITDB_DATABASE=IReNEdb # Database name as in init-mogo.js
-      - MONGO_INITDB_ROOT_USERNAME=testuser # Database root username as in init-mogo.js
-      - MONGO_INITDB_ROOT_PASSWORD=testpassword # Database root password  as in init-mogo.js
+      - MONGO_INITDB_DATABASE=IReNEdb # Database name to be used. (Same name as in "init-mogo.js" file.)
+      - MONGO_INITDB_ROOT_USERNAME=testuser # Database username to use. (Same name as in "init-mogo.js" file.)
+      - MONGO_INITDB_ROOT_PASSWORD=testpassword # Database user password. (Same name as in "init-mogo.js" file.)
     volumes:
-      - database_vol:/data/db # Update to a location on disc and not a volume
+      - irene_db:/data/db # Map internal container data to the persistent docker data volume created. (i.e: "irene-db")
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro # Configuration file to be used as the database init file. (i.e: "init-mongo.js")
     networks:
       - irene-network
-
-  # # #################### ADMIN ####################
-  admin-ui:
+      
+  ########## ADMIN CONFIGURATION ##########
+  admin-ui: # Admin User Interface container configuration
     restart: always
     build: 
       context: ./IReNE-admin-ui
       dockerfile: ./Dockerfile
     networks:
       - irene-network
-  
-  admin-server:
+    
+  admin-server: # Admin REST Api Server container configuration  
     restart: always
     build: 
       context: ./IReNE-admin-server
@@ -49,17 +82,16 @@ services:
     networks:
       - irene-network
 
-  # # #################### TellSpace ####################
-  tellspace-ui:
+  ########## TELLSPACE CONFIGURATION ##########
+  tellspace-ui: # TellSpace User Interface container configuration
     restart: always
     build: 
       context: ./IReNE-tellspace-ui
       dockerfile: ./Dockerfile
     networks:
       - irene-network
-
   
-  tellspace-server:
+  tellspace-server: # TellSpace REST Api Server container configuration
     restart: always
     build: 
       context: ./IReNE-tellspace-server
@@ -67,8 +99,8 @@ services:
     networks:
       - irene-network
 
-  # # #################### SearchSpace ####################
-  searchspace-ui:
+  ########## SEARCHSPACE CONFIGURATION ##########
+  searchspace-ui: # SearchSpace User Interface container configuration
     restart: always
     build: 
       context: ./IReNE-searchspace-ui
@@ -76,17 +108,10 @@ services:
     networks:
       - irene-network
   
-  searchspace-server:
+  searchspace-server: # TellSpace REST Api Server container configuration
     restart: always
     build: 
       context: ./IReNE-searchspace-server
       dockerfile: ./Dockerfile
     networks:
       - irene-network
-
-  
-networks:
-  irene-network:
-
-volumes:
-  database_vol:
