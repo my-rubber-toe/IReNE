@@ -59,7 +59,7 @@ Then reload the firewall with `sudo firewall-cmd --reload`.
 
 ## SSL Certificates
 
-For the system to run securely, one must provide a pair of files: certificate file and key file. Create a folder named **ssl-certs** and follow the instructions in the tutorial (HERE)[https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes] to create a self signed cerificates.
+For the system to run securely, one must provide a pair of files: certificate file and key file. Create a folder named **ssl-certs** and follow the instructions in the tutorial [HERE](https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes) to create a self signed cerificates.
 
 On a production scale event, please use a certificate file provided by a valid certificate authority.
 
