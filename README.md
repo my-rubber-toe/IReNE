@@ -165,8 +165,9 @@ The service should be updated.
 
 
 ## Running Admin Terminal Interface
-Inside the virtual machine, go to the adminterminal folder, activate the virtual machine and run the following commands:
+On the root directory of the virtual machine, run the application with the following commands:
 ```sh
+cd adminterminal
 source ./venv/bin/activate
 python main.py
 ```
