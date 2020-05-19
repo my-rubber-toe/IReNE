@@ -163,3 +163,10 @@ docker-compose up -d <service-to-be-updated>
 
 The service should be updated.
 
+
+## Running Admin Terminal Interface
+Inside the virtual machine, go to the adminterminal folder, activate the virtual machine and run the following commands:
+```sh
+source ./venv/bin/activate
+python main.py
+```
