@@ -55,7 +55,7 @@ On a production scale event, please use a certificate file provided by a valid c
 
 ## Setup: Database credentials
 
-Access the `init-mongo.js` file and configure the file by setting the names of the database user, password and database name to use.
+Access the `init-mongo.js` file and configure the file by setting the names of the database user, password and database name to use. Once the database is runnig, follow the instructions on the repository `IReNE-Database` to populate and set predefined data.
 
 ## Setup: Docker Compose File
 
